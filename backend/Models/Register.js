@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
+
 
 const registrationSchema = new mongoose.Schema({
     firstName: {
@@ -19,7 +20,7 @@ const registrationSchema = new mongoose.Schema({
             true, "Last name is required"
         ],
          minlength: [
-            2, "Minimum 2 characters required"
+            , "Minimum 2 characters required"
         ] },
 
     dob: { 
@@ -28,14 +29,15 @@ const registrationSchema = new mongoose.Schema({
             true, "Date of birth is required"
         ] },
 
-    gender: { 
-        type: String,
-         required: [
-            true, "Gender is required"
-        ], 
-        enum: [
-            "Male", "Female", "Other"
-        ] },
+        gender: { 
+          type: String,
+          required: [true, "Gender is required"],
+          enum: ["Male", "Female", "Other"],
+          set: function(value) {
+            return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+          }
+        },
+        
 
     email: { 
       type: String, 
@@ -99,7 +101,7 @@ const registrationSchema = new mongoose.Schema({
         /^\d{4}$/, "Passing year must be a 4-digit year"
     ] 
     },
-
+    
     percentage: { 
       type: Number, 
       required: [
@@ -120,5 +122,5 @@ const registrationSchema = new mongoose.Schema({
         ] }
   });
   
-  const Registration = mongoose.model("Registration", registrationSchema);
-  module.exports = Registration;
+  const Register = mongoose.model("register", registrationSchema);
+  module.exports = Register;
